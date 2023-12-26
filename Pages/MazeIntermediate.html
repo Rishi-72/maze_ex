@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+         body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background-image: url("../Assets/Images/maze1.jpg");
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2em;
+            color: #ffffff;
+        }
+
+        #maze {
+            display: grid;
+            grid-template-columns: repeat(25, 25px);
+            grid-template-rows: repeat(25, 25px);
+            gap: 2px;
+            border: 4px solid #555;
+            border-radius: 10px;
+            overflow: hidden;
+            background-image: linear-gradient(to bottom right, #4934c3, #959e16);
+            margin-top: 20px;
+        }
+
+        .cell {
+            width: 25px;
+            height: 25px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: background-color 0.1s ease;
+            opacity: 1;
+            border-radius: 10%;
+        }
+
+        .wall {
+            opacity: 1;
+            background-size: cover;
+            background-position: center;
+            background-image:url("../Assets/Images/maze3.jpg");
+        }
+
+        .player {
+            color: #00ff51;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        .destination {
+            color: magenta;
+        }
+        #timer,
+        #steps,#coinsCollected {
+            position: fixed;
+            color: #729c2e;
+            font-size: 20px;
+        }
+
+        #timer {
+            top: 10px;
+            left: 10px;
+        }
+
+        #steps {
+            top: 40px;
+            left: 10px;
+        }
+        #coinsCollected{
+            top: 65px;
+            left: 10px;
+
+        }
+
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: hsla(0, 0%, 0%, 0);
+            margin: 15% auto;
+            padding: 20px;
+            width: 50%;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+
+        #musicIcon {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+        
+        @font-face {
+            font-family: myfont;
+            src: url("../Assets/Fonts/DragonHunter-9Ynxj.otf");
+        }
+        .name{
+            font-family: myfont;
+        }
+        #resetButton {
+            cursor: pointer;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+        }
+        #celebration {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+       }
+
+       .balloon,
+      .cracker {
+            width: 20px;
+            height: 20px;
+            background-color: #ffeb3b; 
+            border-radius: 50%;
+            margin: 5px;
+            animation: floatUp 3s ease-in-out infinite;
+       }
+
+       .cracker {
+            background-color: #e57373; 
+            animation: explode 1s ease-out forwards;
+            opacity: 0;
+}
+
+  @keyframes floatUp {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-30px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes explode {
+    to {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+}
+button {
+                text-decoration: none;
+                background-color: #2d98b9;
+                background-image: linear-gradient(90deg, #b7aa21 0%, #bc401e 100%); 
+                color: brown;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                margin:20px;
+                position: relative;
+                overflow: hidden;
+                width: 150px; 
+    }
+
+    button:hover {
+                background-color: rgb(194, 94, 210);
+                transform: scale(1.1);
+                transition: transform 0.3s ease;
+                animation: fiery 0.5s infinite alternate;
+    }
+
+
+            @keyframes fiery {
+                0% {
+                    box-shadow: 0 0 5px 0px #d79e0c;
+                }
+                50% {
+                    box-shadow: 0 0 20px 10px #cda711;
+                }
+                100% {
+                    box-shadow: 0 0 5px 0px #c53f0f;
+                }
+            }
+
+        .coin {
+            color: #ffeb3b;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="name">MAZE EXPLORER</h1>
+    <div id="timer">Timer: 0s</div>
+    <div id="steps">Steps: 0</div>
+    <div id="maze"></div>
+    <div class="modal" id="customModal">
+        <div class="modal-content">
+            <h1>Congratulations!</h1>
+            <p id="modalMessage"></p>
+            <button>
+                <a style="text-decoration: none;" href="C:\Users\tva6\Desktop\Code_With_Adii\MazeExplore\Pages\MazeExpert.html">
+                    <span style="color: rgb(236, 237, 236);">NEXT</span>
+                </a>
+            </button>
+        </div>
+    </div>
+    <div id="musicIcon" onclick="toggleMusic()"><i class="fas fa-music"></i></div>
+    <div id="coinsCollected">
+        <!-- <i class="fas fa-coins"></i> -->Coins Collected: 0
+    </div>
+    <audio id="backgroundMusic" loop>
+        <source src="C:\Users\tva6\Desktop\Code_With_Adii\MazeExplore\Assets\animal.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <a href="C:\Users\tva6\Desktop\Code_With_Adii\MazeExplore\Index\index.html" style="position: fixed; bottom: 10px; left: 10px;">
+        <i class="fas fa-house"></i>
+    </a>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const mazeContainer = document.getElementById("maze");
+            const timerElement = document.getElementById("timer");
+            const stepsElement = document.getElementById("steps");
+            const coinsCollectedElement = document.getElementById('coinsCollected');
+
+            const mazeSize = 25;
+            let playerPosition = {
+                row: 0,
+                col: 0
+            };
+            const destinationPosition = {
+                row: mazeSize - 1,
+                col: mazeSize - 1
+            };
+            let timer;
+            let steps = 0;
+            let coinsCollected = 0;
+
+            const maze = [
+    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1],
+    [1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0],
+    [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0],
+    [1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0],
+    [1, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 1, 1, 1, 2, 0, 1, 0, 1, 0],
+    [1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0],
+    [1, 1, 0, 0, 1, 1, 1, 2, 2, 2, 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1, 0],
+    [1, 1, 0, 0, 0, 0, 1, 0, 1, 2, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1],
+    [1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0],
+    [1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1],
+    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0, 0, 0, 1, 0, 1, 0],
+    [1, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0],
+    [0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0],
+    [1, 0, 2, 0, 1, 0, 1, 0, 0, 2, 2, 2, 2, 2, 0, 0, 1, 1, 1, 2, 0, 1, 0, 1, 0],
+    [1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0],
+    [1, 1, 2, 0, 1, 1, 1, 0, 0, 2, 1, 2, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1, 0],
+    [1, 1, 2, 0, 0, 0, 1, 0, 1, 2, 1, 2, 1, 0, 1, 0, 1, 0, 1, 2, 1, 0, 0, 1, 1],
+    [1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 2, 1, 0, 0, 0, 1, 0, 1, 2, 0, 1, 0, 0, 0],
+    [0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 2, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0],
+    [0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0],
+    [1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0],
+    [1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]
+            ];
+
+            function initializeMaze() {
+                mazeContainer.innerHTML = "";
+                for (let row = 0; row < mazeSize; row++) {
+                    for (let col = 0; col < mazeSize; col++) {
+                        const cell = document.createElement("div");
+                        cell.className = "cell";
+                        if (maze[row][col] === 1) {
+                            cell.classList.add("wall");
+                        } else if (maze[row][col] === 2) {
+                            cell.classList.add("coin");
+                            cell.innerHTML = '<i class="fas fa-coins"></i>';
+                        }
+                        mazeContainer.appendChild(cell);
+                    }
+                }
+                updatePlayerPosition();
+            }
+            function updatePlayerPosition() {
+              const playerCell = mazeContainer.children[playerPosition.row * mazeSize + playerPosition.col];
+                 const destinationCell = mazeContainer.children[destinationPosition.row * mazeSize + destinationPosition.col];
+                const coinsCollectedElement = document.getElementById('coinsCollected');
+
+                const cellValue = maze[playerPosition.row][playerPosition.col];
+
+                 if (cellValue === 2) {
+              // The player collected a coin
+                    maze[playerPosition.row][playerPosition.col] = 0; // Mark the coin as collected
+                    coinsCollected++;
+                    coinsCollectedElement.textContent = `Coins Collected: ${coinsCollected}`;
+    }
+
+              playerCell.innerHTML = '<i class="fas fa-rocket player"></i>';
+            destinationCell.innerHTML = '<i class="fas fa-trophy destination"></i>';
+}
+
+
+
+            document.addEventListener("keydown", function (event) {
+                const key = event.key.toUpperCase();
+                const newPosition = {
+                    ...playerPosition
+                };
+
+                switch (key) {
+                    case "ARROWUP":
+                    case "W":
+                        newPosition.row = Math.max(0, playerPosition.row - 1);
+                        break;
+                    case "ARROWDOWN":
+                    case "S":
+                        newPosition.row = Math.min(mazeSize - 1, playerPosition.row + 1);
+                        break;
+                    case "ARROWLEFT":
+                    case "A":
+                        newPosition.col = Math.max(0, playerPosition.col - 1);
+                        break;
+                    case "ARROWRIGHT":
+                    case "D":
+                        newPosition.col = Math.min(mazeSize - 1, playerPosition.col + 1);
+                        break;
+                    default:
+                        return;
+                }
+
+                if (maze[newPosition.row][newPosition.col] !== 1) {
+                    const playerCell = mazeContainer.children[playerPosition.row * mazeSize + playerPosition.col];
+                    playerCell.innerHTML = "";
+
+                    playerPosition = newPosition;
+
+                    updatePlayerPosition();
+
+                    steps++;
+                    stepsElement.textContent = `Steps: ${steps}`;
+
+                    if (playerPosition.row === destinationPosition.row && playerPosition.col === destinationPosition.col) {
+                        function showMessage(message) {
+                          const modal = document.getElementById('customModal');
+                         const modalMessage = document.getElementById('modalMessage');
+                          modalMessage.innerHTML = `<p>${message}</p><div id="celebration"></div>`;
+                         modal.style.display = 'block';
+    
+                    // Trigger the celebration animation
+                     celebrate();
+    }
+    
+                          function celebrate() {
+                           const celebrationContainer = document.getElementById('celebration');
+    
+                           // Add balloon and cracker elements dynamically
+                            for (let i = 0; i < 10; i++) {
+                                const balloon = document.createElement('div');
+                                balloon.className = 'balloon';
+                                celebrationContainer.appendChild(balloon);
+    
+                                const cracker = document.createElement('div');
+                                cracker.className = 'cracker';
+                                celebrationContainer.appendChild(cracker);
+        }
+    }
+                        stopTimer();
+                        showMessage(`Congratulations! You completed the maze in ${steps} steps and ${timerElement.textContent} and also collected ${coinsCollected} coins.`);
+                    }
+                }
+            });
+
+            function updateTimer() {
+                let seconds = 0;
+                timer = setInterval(function () {
+                    seconds++;
+                    timerElement.textContent = `Timer: ${seconds}s`;
+                }, 1000);
+            }
+
+            function stopTimer() {
+                clearInterval(timer);
+            }
+
+            initializeMaze();
+            updateTimer();
+        });
+        
+
+        let musicPlaying = false;
+
+        function toggleMusic() {
+            const backgroundMusic = document.getElementById("backgroundMusic");
+
+            if (!musicPlaying) {
+                backgroundMusic.play();
+            } else {
+                backgroundMusic.pause();
+            }
+
+            musicPlaying = !musicPlaying;
+        }
+    
+            // Create the intermediate level button
+            const intermediateButton = document.createElement('button');
+            intermediateButton.innerHTML = '<a style="text-decoration: none;" href="MazeIntermediate.html"><span style="color: rgb(236, 237, 236);">Intermediate</span></a>';
+            intermediateButton.className = 'close-button';
+            intermediateButton.onclick = closeModal;
+
+            // Append the button to the modal content
+            modalMessage.appendChild(intermediateButton);
+
+            modal.style.display = 'block';
+
+            // Trigger the celebration animation
+            celebrate();
+        
+    </script>
+</body>
+</html>
+

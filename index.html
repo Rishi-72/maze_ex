@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Gaming Zone</title>
+
+    <link rel="icon" href="./Images/maze1.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <style>
+      /* Styles for body */
+        body {
+            background-image: url("./Assets/Images/body-bg.jpg");
+            background-size: cover;
+            text-align: center;
+            background-repeat: no-repeat;
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            width: auto;
+            margin: 0;
+            position: fixed;
+            overflow: scroll;
+            font-family: Arial, sans-serif;
+        }
+       /* Styles for Buttons */
+        button {
+            text-decoration: none;
+            background-color: #2d98b9;
+            background-image: linear-gradient(90deg, #2128b7 0%, #1ebc70 100%);
+            color: brown;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 150px;
+        }
+
+        button:hover {
+            background-color: rgb(194, 94, 210);
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+            animation: fiery 0.5s infinite alternate;
+        }
+        
+        .button-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .button-overlay h2 {
+            color: white;
+            font-size: 24px;
+        }
+        /* Animation for Buttons */
+        @keyframes fiery {
+            0% {
+                box-shadow: 0 0 5px 0px #bfd70c;
+            }
+
+            50% {
+                box-shadow: 0 0 20px 10px #cda711;
+            }
+
+            100% {
+                box-shadow: 0 0 5px 0px #c53f0f;
+            }
+        }
+       /* Styles for Headings */
+        h1 {
+            background-image: linear-gradient(green, yellow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 55px;
+            font-family: myfont;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h3 {
+            background: #2afe00f2;
+            background: -webkit-linear-gradient(to right, #f83600, #fe8c00);
+            background: linear-gradient(to right, #f83600, #fe8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 30px;
+            font-family: myfont;
+            animation: fadeIn 2s ease-in-out;
+        }
+        /* Styles for links */
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+        /* Using custom font */
+        @font-face {
+            font-family: myfont;
+            src: url("./Fonts/DragonHunter-9Ynxj.otf");
+        }
+       /* Style for Music section */
+        audio {
+            display: none;
+        }
+
+        #musicIcon {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            color: rgb(254, 255, 253);
+        }
+        /* Animation for Heading Text */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Style for Carousel */
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-slide {
+            display: none;
+            text-align: center;
+        }
+
+        img {
+            max-width: 55%;
+            height: 1005;
+        }
+
+        /* CREATING RESPONSIVENESS         */
+        @media (300px <= width <=600px){
+            h1 {
+                font-size: 40px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            button {
+                width: 150px;
+            }
+            body {
+            background-image: url("./Assets/Images/body-bg.jpg");
+            background-size: cover;
+            text-align: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            width: auto;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        }
+        /* Glowing Social Icons Styles */
+
+        ul {
+            display: flex;
+        }
+
+        ul li {
+            position: relative;
+            display: block;
+            color: #666;
+            font-size: 30px;
+            height: 60px;
+            width: 60px;
+            background: #171515;
+            line-height: 60px;
+            border-radius: 50%;
+            margin: 0 15px;
+            cursor: pointer;
+            transition: .5s;
+        }
+
+        ul li:before {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            height: inherit;
+            width: inherit;
+            border-radius: 50%;
+            transform: scale(.9);
+            z-index: -1;
+            transition: .5s;
+        }
+
+        ul li:nth-child(1):before {
+            background: #4267B2;
+            color: #1DA1F2;
+        }
+
+        ul li:nth-child(2):before {
+            background: #1DA1F2;
+        }
+
+        ul li:nth-child(3):before {
+            background: #E1306C;
+        }
+
+        ul li:nth-child(4):before {
+            background: #2867B2;
+        }
+
+        ul li:nth-child(5):before {
+            background: #ff0000;
+        }
+
+        ul li:hover:before {
+            filter: blur(3px);
+            transform: scale(1.2);
+        }
+
+        ul li:hover {
+            color: #ffa502;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+         /* Style for language selector */
+        .goog-te-banner-frame.skiptranslate {
+               display: none;
+        }
+
+        body {
+           position: relative;
+       }
+
+        #google_translate_element {
+             position: absolute;
+             top: 10px;
+             right: 10px;
+             z-index: 9999;
+        }
+        .arrow {
+      font-size: 30px;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #689c30;
+    }
+
+    .arrow-left {
+      left: 0;
+    }
+
+    .arrow-right {
+      right: 0;
+    }
+    
+    </style>
+    <!-- Translate API -->
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+
+<body>
+   
+
+  <div id="google_translate_element"></div>
+  <section>
+    <h1 class="translatable" id="textToTranslate">Welcome To Maze Explorer</h1>
+    <h3 class="translatable">Our life is like a maze, and success is the destination for it.</h3>
+  </section>
+
+  <div class="carousel-container">
+    <div class="carousel-slide" id="slide1">
+        <img src="./Assets/Images/maze2.jpg" alt="Image 1">
+        <div class="button-overlay">
+            <button><a href="./Pages/MazeDemo.html"><span style="color:rgb(236, 237, 236);">Demo</span></a></button>
+        </div>
+    </div>
+    <div class="carousel-slide" id="slide2">
+        <img src="./Assets/Images/maze6.jpg" alt="Image 2">
+        <div class="button-overlay">
+            <button><a href="./Pages/MazeBeginer.html"><span style=" color:rgb(236, 237, 236);">Beginner</span></a></button>
+        </div>
+    </div>
+    <div class="carousel-slide" id="slide3">
+        <img src="./Assets/Images/maze5.jpg" alt="Image 3">
+        <div class="button-overlay">
+            <button><a href="./Pages/MazeIntermediate.html"><span style="color:rgb(236, 237, 236);">Intermediate</span></a></button>
+        </div>
+    </div>
+    <div class="carousel-slide" id="slide4">
+        <img src="./Assets/Images/maze4.jpg" alt="Image 4">
+        <div class="button-overlay">
+            <button><a href="./Pages/MazeExpert.html"><span style="color:rgb(236, 237, 236);">Expert</span></a></button>
+        </div>
+    </div>
+</div>
+            <!-- <i class="bi bi-arrow-right-circle-fill"></i> -->
+            <i class="arrow arrow-left fa fa-arrow-left" onclick="prevSlide()"></i>
+            <i class="arrow arrow-right fa fa-arrow-right" onclick="nextSlide()"></i>
+  <!-- Audio section -->
+    <audio id="backgroundMusic" loop>
+        <source src="./Assets/Images/animal.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <div id="musicIcon" onclick="toggleMusic()">&#127925;</div>
+
+    <script>
+        function toggleMusic() {
+            const backgroundMusic = document.getElementById("backgroundMusic");
+
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+            } else {
+                backgroundMusic.pause();
+            }
+        }
+    //  carousel Section
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.display = i === index ? 'block' : 'none';
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        showSlide(currentSlide);
+
+        setInterval(nextSlide, 4000);
+    </script>
+    <!-- Social Media Icons -->
+    <ul>
+        <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+        <li><a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li>
+        <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+        <li><a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+        <li><a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a></li>
+    </ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const socialIcons = document.querySelectorAll('ul li');
+
+            socialIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', function () {
+                    const iconBefore = this.querySelector('before');
+                    iconBefore.style.boxShadow = '0 0 15px ' + this.dataset.color;
+                    this.style.color = this.dataset.color;
+                });
+
+                icon.addEventListener('mouseleave', function () {
+                    const iconBefore = this.querySelector('before');
+                    iconBefore.style.boxShadow = 'none';
+                    this.style.color = '#666';
+                });
+            });
+        });
+    </script>
+    <!-- Google translate API -->
+     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add an ID to the element you want to translate
+        document.querySelector('.translatable').setAttribute('id', 'textToTranslate');
+  
+        // Listen for changes in the language dropdown
+        document.querySelector('#google_translate_element').addEventListener('change', function () {
+          const selectedLanguage = document.querySelector('.goog-te-combo').value;
+  
+          // Re-initialize Google Translate API
+          googleTranslateElementInit();
+  
+          setTimeout(() => {
+            // Get the original and translated text
+            const originalText = document.querySelector('#textToTranslate').textContent;
+            const translatedText = document.querySelector('.goog-te-banner-frame').textContent;
+  
+            // Display an alert 
+            alert(`Original: ${originalText}\nTranslated: ${translatedText}`);
+          }, 500);
+        });
+      });
+  
+      // Function to initialize Google Translate API
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+      }
+      </script>
+
+</body>
+
+</html>
